@@ -3,6 +3,7 @@
 
 import { useId, useState } from "react";
 
+import CameraCaptureModal from "@/components/CameraCaptureModal";
 import LoadingScreen from "@/components/LoadingScreen";
 import RankingDrawer from "@/components/RankingDrawer";
 import useCoupleData from "@/hooks/useCoupleData";
@@ -14,6 +15,7 @@ import useSession from "@/hooks/useSession";
 export default function Home() {
   const [showReplacePicker, setShowReplacePicker] = useState(false);
   const [isRankingOpen, setIsRankingOpen] = useState(false);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
   const uploadInputId = useId();
   const replaceInputId = useId();
 
@@ -32,7 +34,7 @@ export default function Home() {
   const { elapsedText } = useElapsedTime(updatedAt);
   const { isVisible: isImageVisible } = useImageReveal(imageUrl);
 
-  const { showLoader, loaderText, handleFileChange } = useLoader({
+  const { showLoader, loaderText, handleFileChange, handleFileUpload } = useLoader({
     status,
     coupleKey,
     isValidCouple,
@@ -42,6 +44,16 @@ export default function Home() {
 
   const showInvalidMessage = isValidCouple === false && coupleKey;
   const coupleLabel = displayCoupleName ?? coupleKey;
+
+  const handleCameraCapture = async (dataUrl: string) => {
+    const response = await fetch(dataUrl);
+    const blob = await response.blob();
+    const capturedFile = new File([blob], "camera-capture.jpg", {
+      type: blob.type || "image/jpeg",
+    });
+    setIsCameraOpen(false);
+    await handleFileUpload(capturedFile);
+  };
 
   if (showLoader) {
     const text =
@@ -64,6 +76,11 @@ export default function Home() {
       <RankingDrawer
         isOpen={isRankingOpen}
         onClose={() => setIsRankingOpen(false)}
+      />
+      <CameraCaptureModal
+        isOpen={isCameraOpen}
+        onClose={() => setIsCameraOpen(false)}
+        onCapture={handleCameraCapture}
       />
 
       <div className="w-full max-w-xl space-y-8 text-center">
@@ -141,12 +158,22 @@ export default function Home() {
                       onChange={handleFileChange}
                       disabled={!user}
                     />
-                    <label
-                      htmlFor={replaceInputId}
-                      className="cursor-pointer rounded-full bg-black px-5 py-2 text-sm text-white"
-                    >
-                      Elegir foto
-                    </label>
+                    <div className="flex flex-wrap items-center justify-center gap-2">
+                      <label
+                        htmlFor={replaceInputId}
+                        className="cursor-pointer rounded-full bg-black px-5 py-2 text-sm text-white"
+                      >
+                        Elegir foto
+                      </label>
+                      <button
+                        type="button"
+                        className="cursor-pointer rounded-full border border-black px-5 py-2 text-sm text-black"
+                        onClick={() => setIsCameraOpen(true)}
+                        disabled={!user}
+                      >
+                        Abrir camara
+                      </button>
+                    </div>
                     <p className="text-xs text-neutral-500">
                       Esta nueva foto actualizará el tiempo del encuentro.
                     </p>
@@ -166,12 +193,22 @@ export default function Home() {
                   onChange={handleFileChange}
                   disabled={!user}
                 />
-                <label
-                  htmlFor={uploadInputId}
-                  className="cursor-pointer rounded-full bg-black px-5 py-2 text-sm text-white"
-                >
-                  Elegir foto
-                </label>
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  <label
+                    htmlFor={uploadInputId}
+                    className="cursor-pointer rounded-full bg-black px-5 py-2 text-sm text-white"
+                  >
+                    Elegir foto
+                  </label>
+                  <button
+                    type="button"
+                    className="cursor-pointer rounded-full border border-black px-5 py-2 text-sm text-black"
+                    onClick={() => setIsCameraOpen(true)}
+                    disabled={!user}
+                  >
+                    Abrir camara
+                  </button>
+                </div>
               </>
             )}
           </div>

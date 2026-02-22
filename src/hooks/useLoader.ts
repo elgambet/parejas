@@ -8,6 +8,7 @@ type LoaderState = {
   handleFileChange: (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => Promise<void>;
+  handleFileUpload: (file: File) => Promise<void>;
 };
 
 type UseLoaderInput = {
@@ -37,6 +38,11 @@ export default function useLoader({
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = event.target.files?.[0];
+    if (!file) return;
+    await handleFileUpload(file);
+  };
+
+  const handleFileUpload = async (file: File) => {
     if (!file || !user || !isValidCouple) return;
 
     setUploading(true);
@@ -47,5 +53,5 @@ export default function useLoader({
     }
   };
 
-  return { showLoader, loaderText, uploading, handleFileChange };
+  return { showLoader, loaderText, uploading, handleFileChange, handleFileUpload };
 }
