@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useRef } from 'react';
-import { Camera } from 'react-camera-pro';
+import { useRef } from "react";
+import { Camera } from "react-camera-pro";
 
 type CameraCaptureModalProps = {
   isOpen: boolean;
@@ -11,6 +11,13 @@ type CameraCaptureModalProps = {
 
 type CameraHandle = {
   takePhoto: () => string;
+};
+
+const cameraErrorMessages = {
+  noCameraAccessible: "No se pudo acceder a la camara.",
+  permissionDenied: "No diste permiso para usar la camara.",
+  switchCamera: "No se pudo cambiar la camara.",
+  canvas: "No se pudo capturar la imagen.",
 };
 
 export default function CameraCaptureModal({
@@ -33,9 +40,16 @@ export default function CameraCaptureModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
       <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white p-4">
-        <p className="mb-3 text-center text-sm text-neutral-700">Alinea la foto y captura</p>
+        <p className="mb-3 text-center text-sm text-neutral-700">
+          Alinea la foto y captura
+        </p>
         <div className="overflow-hidden rounded-xl">
-          <Camera ref={cameraRef} facingMode="environment" aspectRatio={4 / 3} />
+          <Camera
+            ref={cameraRef}
+            facingMode="environment"
+            aspectRatio={4 / 3}
+            errorMessages={cameraErrorMessages}
+          />
         </div>
         <div className="mt-4 flex items-center justify-center gap-2">
           <button
