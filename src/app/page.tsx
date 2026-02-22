@@ -109,22 +109,20 @@ export default function Home() {
         {imageUrl && (
           <div className="space-y-3">
             <div className="rounded-2xl border border-neutral-200 p-4">
-              <div className="relative w-full overflow-hidden rounded-xl bg-neutral-100 aspect-[4/3]">
-                {!isImageVisible && (
-                  <div className="absolute inset-0">
-                    <div className="h-full w-full animate-[shimmer_1.2s_ease-in-out_infinite] bg-[linear-gradient(110deg,#f3f4f6,45%,#e5e7eb,55%,#f3f4f6)] bg-[length:200%_100%]" />
-                  </div>
-                )}
-                <img
-                  src={imageUrl}
-                  alt={coupleLabel ?? "Couple photo"}
-                  className={`absolute inset-0 h-full w-full rounded-xl object-cover transition-all duration-500 ${
-                    isImageVisible
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-3"
-                  }`}
-                />
-              </div>
+              {!isImageVisible && (
+                <div className="w-full min-h-[220px] overflow-hidden rounded-xl bg-neutral-100">
+                  <div className="h-full w-full animate-[shimmer_1.2s_ease-in-out_infinite] bg-[linear-gradient(110deg,#f3f4f6,45%,#e5e7eb,55%,#f3f4f6)] bg-[length:200%_100%]" />
+                </div>
+              )}
+              <img
+                src={imageUrl}
+                alt={coupleLabel ?? "Couple photo"}
+                className={`w-full h-auto rounded-xl transition-all duration-500 ${
+                  isImageVisible
+                    ? "opacity-100 translate-y-0"
+                    : "h-0 opacity-0 translate-y-3"
+                }`}
+              />
             </div>
             {elapsedText && (
               <p className="text-sm italic text-neutral-500">

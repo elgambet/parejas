@@ -193,16 +193,12 @@ export default function RankingDrawer({ isOpen, onClose }: RankingDrawerProps) {
                     </div>
                     <p className="text-base font-semibold text-neutral-900">{entry.coupleName}</p>
                     {entry.imageUrl && isRevealed && (
-                      <div
-                        className="mt-3 overflow-hidden opacity-0 max-h-0 animate-[reveal_600ms_ease-out_forwards]"
-                      >
-                        <div className="relative w-full overflow-hidden rounded-xl bg-neutral-100 aspect-[4/3]">
-                          <img
-                            src={entry.imageUrl}
-                            alt={entry.coupleName}
-                            className="absolute inset-0 h-full w-full rounded-xl object-cover"
-                          />
-                        </div>
+                      <div className="mt-3 opacity-0 animate-[fade-in_450ms_ease-out_forwards]">
+                        <img
+                          src={entry.imageUrl}
+                          alt={entry.coupleName}
+                          className="w-full h-auto rounded-xl"
+                        />
                       </div>
                     )}
                     <p className="text-sm text-neutral-600">{entry.elapsedText}</p>
@@ -222,10 +218,9 @@ export default function RankingDrawer({ isOpen, onClose }: RankingDrawerProps) {
           }
         }
 
-        @keyframes reveal {
+        @keyframes fade-in {
           to {
             opacity: 1;
-            max-height: 16rem;
           }
         }
       `}</style>
