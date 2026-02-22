@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Camera } from "react-camera-pro";
 
 type CameraCaptureModalProps = {
@@ -11,6 +11,7 @@ type CameraCaptureModalProps = {
 
 type CameraHandle = {
   takePhoto: () => string;
+  switchCamera: () => void;
 };
 
 const cameraErrorMessages = {
@@ -26,6 +27,7 @@ export default function CameraCaptureModal({
   onCapture,
 }: CameraCaptureModalProps) {
   const cameraRef = useRef<CameraHandle | null>(null);
+  const [cameraCount, setCameraCount] = useState(0);
 
   if (!isOpen) return null;
 
@@ -37,19 +39,33 @@ export default function CameraCaptureModal({
     onCapture(dataUrl);
   };
 
+  const handleSwitchCamera = () => {
+    cameraRef.current?.switchCamera();
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
       <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white p-4">
         <p className="mb-3 text-center text-sm text-neutral-700">
           Alinea la foto y captura
         </p>
-        <div className="overflow-hidden rounded-xl">
+        <div className="relative overflow-hidden rounded-xl">
           <Camera
             ref={cameraRef}
             facingMode="environment"
             aspectRatio={4 / 3}
             errorMessages={cameraErrorMessages}
+            numberOfCamerasCallback={setCameraCount}
           />
+          {cameraCount > 1 && (
+            <button
+              type="button"
+              className="absolute right-3 top-3 rounded-full bg-black/70 px-3 py-1 text-xs text-white backdrop-blur-sm"
+              onClick={handleSwitchCamera}
+            >
+              Cambiar
+            </button>
+          )}
         </div>
         <div className="mt-4 flex items-center justify-center gap-2">
           <button
