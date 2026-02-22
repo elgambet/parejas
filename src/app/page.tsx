@@ -6,6 +6,7 @@ import { useId, useState } from "react";
 import CameraCaptureModal from "@/components/CameraCaptureModal";
 import LoadingScreen from "@/components/LoadingScreen";
 import RankingDrawer from "@/components/RankingDrawer";
+import UploadSuccessModal from "@/components/UploadSuccessModal";
 import useCoupleData from "@/hooks/useCoupleData";
 import useElapsedTime from "@/hooks/useElapsedTime";
 import useImageReveal from "@/hooks/useImageReveal";
@@ -16,6 +17,7 @@ export default function Home() {
   const [showReplacePicker, setShowReplacePicker] = useState(false);
   const [isRankingOpen, setIsRankingOpen] = useState(false);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [isUploadSuccessOpen, setIsUploadSuccessOpen] = useState(false);
   const uploadInputId = useId();
   const replaceInputId = useId();
 
@@ -52,7 +54,21 @@ export default function Home() {
       type: blob.type || "image/jpeg",
     });
     setIsCameraOpen(false);
-    await handleFileUpload(capturedFile);
+    const success = await handleFileUpload(capturedFile);
+    if (success) {
+      setShowReplacePicker(false);
+      setIsUploadSuccessOpen(true);
+    }
+  };
+
+  const handleUploadFromInput = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const success = await handleFileChange(event);
+    if (success) {
+      setShowReplacePicker(false);
+      setIsUploadSuccessOpen(true);
+    }
   };
 
   if (showLoader) {
@@ -81,6 +97,13 @@ export default function Home() {
         isOpen={isCameraOpen}
         onClose={() => setIsCameraOpen(false)}
         onCapture={handleCameraCapture}
+      />
+      <UploadSuccessModal
+        isOpen={isUploadSuccessOpen}
+        coupleName={coupleLabel ?? "La pareja"}
+        coupleKey={coupleKey}
+        fallbackImageUrl={imageUrl}
+        onClose={() => setIsUploadSuccessOpen(false)}
       />
 
       <div className="w-full max-w-xl space-y-8 text-center">
@@ -153,7 +176,7 @@ export default function Home() {
                       type="file"
                       accept="image/*"
                       className="sr-only"
-                      onChange={handleFileChange}
+                      onChange={handleUploadFromInput}
                       disabled={!user}
                     />
                     <div className="flex flex-wrap items-center justify-center gap-2">
@@ -188,7 +211,7 @@ export default function Home() {
                   type="file"
                   accept="image/*"
                   className="sr-only"
-                  onChange={handleFileChange}
+                  onChange={handleUploadFromInput}
                   disabled={!user}
                 />
                 <div className="flex flex-wrap items-center justify-center gap-2">

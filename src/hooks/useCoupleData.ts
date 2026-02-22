@@ -34,7 +34,7 @@ type UseCoupleDataState = {
   isValidCouple: boolean | null;
   status: "idle" | "loading" | "ready" | "error";
   errorMessage: string | null;
-  uploadImage: (file: File, user: User) => Promise<void>;
+  uploadImage: (file: File, user: User) => Promise<boolean>;
 };
 
 function readCoupleKeyParam(rawValue: string | null): string | null {
@@ -148,15 +148,16 @@ export default function useCoupleData(): UseCoupleDataState {
     };
   }, [coupleKey]);
 
-  const uploadImage = async (file: File, user: User) => {
-    if (!coupleKey) return;
+  const uploadImage = async (file: File, user: User): Promise<boolean> => {
+    if (!coupleKey) return false;
 
     try {
       if (!file.type.startsWith("image/")) {
         setErrorMessage("Solo se permiten imágenes.");
-        return;
+        return false;
       }
 
+      setErrorMessage(null);
       const storageRef = ref(storage, `couples/${coupleKey}/photo`);
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
@@ -176,9 +177,11 @@ export default function useCoupleData(): UseCoupleDataState {
       setImageUrl(url);
       setUpdatedAt(new Date());
       setStatus("ready");
+      return true;
     } catch (error) {
       setStatus("error");
       setErrorMessage("No se pudo subir la foto. Intentalo de nuevo.");
+      return false;
     }
   };
 
