@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "Fortalesia";
-  src: url("/FortalesiaPlain_PERSONAL_USE_ONLY.otf") format("opentype");
-  font-display: swap;
-}
-
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -33,6 +27,6 @@ body {
 }
 
 .font-fortalesia {
-  font-family: "Fortalesia", Georgia, "Times New Roman", serif;
+  font-family: var(--font-fortalesia), Georgia, "Times New Roman", serif;
   letter-spacing: 0.02em;
 }
