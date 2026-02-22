@@ -161,7 +161,7 @@ export default function UploadSuccessModal({
           Felicitaciones!
         </h2>
         {displayedImageUrl && (
-          <div className="relative mt-4 flex-1 overflow-visible">
+          <div className="relative mt-4 h-[56vh] max-h-[56vh] overflow-visible">
             {hearts.map((heart, index) => (
               <span
                 key={`${heart.color}-${index}`}
@@ -176,11 +176,11 @@ export default function UploadSuccessModal({
                 ❤
               </span>
             ))}
-            <div className="h-full overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 p-2">
+            <div className="flex h-full items-center justify-center overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 p-2">
               <img
                 src={displayedImageUrl}
                 alt={coupleName}
-                className="h-full w-full rounded-lg object-contain"
+                className="h-full w-auto max-w-full rounded-lg object-contain"
               />
             </div>
           </div>
