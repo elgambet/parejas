@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Camera } from "react-camera-pro";
 
 type CameraCaptureModalProps = {
@@ -27,7 +27,6 @@ export default function CameraCaptureModal({
   onCapture,
 }: CameraCaptureModalProps) {
   const cameraRef = useRef<CameraHandle | null>(null);
-  const [cameraCount, setCameraCount] = useState(0);
 
   if (!isOpen) return null;
 
@@ -55,17 +54,31 @@ export default function CameraCaptureModal({
             facingMode="environment"
             aspectRatio={4 / 3}
             errorMessages={cameraErrorMessages}
-            numberOfCamerasCallback={setCameraCount}
           />
-          {cameraCount > 1 && (
-            <button
-              type="button"
-              className="absolute right-3 top-3 rounded-full bg-black/70 px-3 py-1 text-xs text-white backdrop-blur-sm"
-              onClick={handleSwitchCamera}
+          <button
+            type="button"
+            aria-label="Cambiar camara"
+            title="Cambiar camara"
+            className="absolute right-3 top-3 z-20 rounded-full bg-black/70 p-2 text-white backdrop-blur-sm"
+            onClick={handleSwitchCamera}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-5 w-5"
+              aria-hidden="true"
             >
-              Cambiar
-            </button>
-          )}
+              <path d="M17 1l4 4-4 4" />
+              <path d="M3 11V9a4 4 0 014-4h14" />
+              <path d="M7 23l-4-4 4-4" />
+              <path d="M21 13v2a4 4 0 01-4 4H3" />
+            </svg>
+          </button>
         </div>
         <div className="mt-4 flex items-center justify-center gap-2">
           <button
