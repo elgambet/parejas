@@ -1,10 +1,16 @@
 'use client'
 
+import { useId, useState } from 'react'
+
 import useCoupleData from '@/hooks/useCoupleData'
 import useLoader from '@/hooks/useLoader'
 import useSession from '@/hooks/useSession'
 
 export default function Home() {
+  const [showReplacePicker, setShowReplacePicker] = useState(false)
+  const uploadInputId = useId()
+  const replaceInputId = useId()
+
   const { user, authReady, authError, signInWithGoogle } = useSession()
   const {
     coupleKey,
@@ -31,7 +37,9 @@ export default function Home() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white px-6 py-16 text-black">
         <div className="text-center">
-          <p className="text-lg text-neutral-700">{loaderText}</p>
+          <p className="text-lg text-neutral-700">
+            {loaderText === 'Subiendo foto...' ? 'Subiendo la foto...' : 'Preparando la búsqueda...'}
+          </p>
         </div>
       </main>
     )
@@ -41,17 +49,19 @@ export default function Home() {
     <main className="flex min-h-screen items-center justify-center bg-white px-6 py-16 text-black">
       <div className="w-full max-w-xl space-y-8 text-center">
         <div className="space-y-3">
-          <h1 className="text-3xl font-semibold">Fotos de parejas</h1>
+          <h1 className="text-3xl font-semibold">Búsqueda de parejas</h1>
           {coupleKey ? (
             <p className="text-lg text-neutral-700">
               {showInvalidMessage
-                ? `La pareja "${coupleLabel}" no es válida.`
+                ? `Esa pareja no está en la lista: "${coupleLabel}".`
                 : imageUrl
-                ? `Excelente, la pareja esta unida: ${coupleLabel}`
-                : `Subí una foto de la pareja "${coupleLabel}"`}
+                ? `¡Encontrada! ${coupleLabel} ya está unida.`
+                : `La pareja "${coupleLabel}" aún no se encuentra, buscala antes que se ponga triste...`}
             </p>
           ) : (
-            <p className="text-lg text-neutral-700">Comparte una URL con el parámetro couple.</p>
+            <p className="text-lg text-neutral-700">
+              Entrá con el QR de tu asiento para empezar la búsqueda.
+            </p>
           )}
         </div>
 
@@ -62,18 +72,58 @@ export default function Home() {
         )}
 
         {coupleKey && isValidCouple && (
-          <label className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-neutral-300 px-6 py-8">
-            <span className="text-sm text-neutral-600">
-              {imageUrl ? 'Reemplazar foto' : 'Elegir una foto'}
-            </span>
-            <input
-              type="file"
-              accept="image/*"
-              className="w-full text-sm file:mr-4 file:rounded-full file:border-0 file:bg-black file:px-4 file:py-2 file:text-white"
-              onChange={handleFileChange}
-              disabled={!user}
-            />
-          </label>
+          <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-neutral-300 px-6 py-8">
+            {imageUrl ? (
+              <>
+                {!showReplacePicker && (
+                  <button
+                    type="button"
+                    className="rounded-full bg-black px-5 py-2 text-sm text-white"
+                    onClick={() => setShowReplacePicker(true)}
+                    disabled={!user}
+                  >
+                    Reemplazar foto
+                  </button>
+                )}
+                {showReplacePicker && (
+                  <>
+                    <input
+                      id={replaceInputId}
+                      type="file"
+                      accept="image/*"
+                      className="sr-only"
+                      onChange={handleFileChange}
+                      disabled={!user}
+                    />
+                    <label
+                      htmlFor={replaceInputId}
+                      className="cursor-pointer rounded-full bg-black px-5 py-2 text-sm text-white"
+                    >
+                      Elegir foto
+                    </label>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <span className="text-sm text-neutral-600">Subir foto de la pareja</span>
+                <input
+                  id={uploadInputId}
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={handleFileChange}
+                  disabled={!user}
+                />
+                <label
+                  htmlFor={uploadInputId}
+                  className="cursor-pointer rounded-full bg-black px-5 py-2 text-sm text-white"
+                >
+                  Elegir foto
+                </label>
+              </>
+            )}
+          </div>
         )}
 
         {!user && authReady && (
