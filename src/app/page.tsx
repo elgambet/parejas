@@ -8,7 +8,16 @@ import {
   signInWithPopup,
   User,
 } from 'firebase/auth'
-import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  serverTimestamp,
+  setDoc,
+  where,
+} from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
 import { auth, db, googleAuthProvider, storage } from '@/lib/firebase'
@@ -18,25 +27,23 @@ type CoupleRecord = {
   imageUrl: string
 }
 
-function normalizeCoupleKey(value: string): string {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, ' ')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
+type ValidCoupleRecord = {
+  coupleKey: string
+  coupleName: string
 }
 
-function readCoupleParam(rawValue: string | null): string | null {
+function readCoupleKeyParam(rawValue: string | null): string | null {
   if (!rawValue) return null
-  const decoded = decodeURIComponent(rawValue).trim()
+  const decoded = decodeURIComponent(rawValue).trim().toLowerCase()
   return decoded.length ? decoded : null
 }
 
 export default function Home() {
   const searchParams = useSearchParams()
-  const rawCouple = useMemo(() => readCoupleParam(searchParams.get('couple')), [searchParams])
-  const coupleKey = useMemo(() => (rawCouple ? normalizeCoupleKey(rawCouple) : ''), [rawCouple])
+  const coupleKey = useMemo(
+    () => readCoupleKeyParam(searchParams.get('couple')),
+    [searchParams]
+  )
 
   const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -45,6 +52,8 @@ export default function Home() {
   const [user, setUser] = useState<User | null>(null)
   const [authReady, setAuthReady] = useState(false)
   const [authError, setAuthError] = useState<string | null>(null)
+  const [isValidCouple, setIsValidCouple] = useState<boolean | null>(null)
+  const [displayCoupleName, setDisplayCoupleName] = useState<string | null>(null)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -65,24 +74,58 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    if (!rawCouple || !coupleKey) {
+    if (!coupleKey) {
       setStatus('error')
       setErrorMessage('Falta el parámetro couple en la URL.')
+      setIsValidCouple(false)
       return
     }
 
     let cancelled = false
 
-    const loadExisting = async () => {
+    const loadCoupleData = async () => {
       try {
         setStatus('loading')
-        const docRef = doc(db, 'couples', coupleKey)
-        const snapshot = await getDoc(docRef)
+        setErrorMessage(null)
+
+        const directDoc = doc(db, 'validCouples', coupleKey)
+        const directSnapshot = await getDoc(directDoc)
+
         if (cancelled) return
 
-        if (snapshot.exists()) {
-          const data = snapshot.data() as CoupleRecord
-          setImageUrl(data.imageUrl)
+        if (directSnapshot.exists()) {
+          const data = directSnapshot.data() as ValidCoupleRecord
+          setIsValidCouple(true)
+          setDisplayCoupleName(data.coupleName ?? coupleKey)
+        } else {
+          const listQuery = query(
+            collection(db, 'validCouples'),
+            where('coupleKey', '==', coupleKey)
+          )
+          const listSnapshot = await getDocs(listQuery)
+          if (cancelled) return
+
+          if (!listSnapshot.empty) {
+            const data = listSnapshot.docs[0].data() as ValidCoupleRecord
+            setIsValidCouple(true)
+            setDisplayCoupleName(data.coupleName ?? coupleKey)
+          } else {
+            setIsValidCouple(false)
+            setDisplayCoupleName(coupleKey)
+          }
+        }
+
+        if (!cancelled && (isValidCouple || directSnapshot.exists())) {
+          const docRef = doc(db, 'couples', coupleKey)
+          const snapshot = await getDoc(docRef)
+          if (cancelled) return
+
+          if (snapshot.exists()) {
+            const data = snapshot.data() as CoupleRecord
+            setImageUrl(data.imageUrl)
+          } else {
+            setImageUrl(null)
+          }
         } else {
           setImageUrl(null)
         }
@@ -91,16 +134,16 @@ export default function Home() {
       } catch (error) {
         if (cancelled) return
         setStatus('error')
-        setErrorMessage('Hubo un problema al cargar la foto. Intentalo de nuevo.')
+        setErrorMessage('Hubo un problema al cargar la información. Intentalo de nuevo.')
       }
     }
 
-    loadExisting()
+    loadCoupleData()
 
     return () => {
       cancelled = true
     }
-  }, [rawCouple, coupleKey])
+  }, [coupleKey, isValidCouple])
 
   const handleGoogleSignIn = async () => {
     try {
@@ -113,7 +156,7 @@ export default function Home() {
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
-    if (!file || !rawCouple || !coupleKey || !user) return
+    if (!file || !coupleKey || !user || !isValidCouple) return
 
     try {
       if (!file.type.startsWith('image/')) {
@@ -132,7 +175,7 @@ export default function Home() {
       await setDoc(
         docRef,
         {
-          coupleName: rawCouple,
+          coupleName: displayCoupleName ?? coupleKey,
           imageUrl: url,
           updatedBy: user.uid,
           updatedAt: serverTimestamp(),
@@ -150,16 +193,21 @@ export default function Home() {
     }
   }
 
+  const showInvalidMessage = isValidCouple === false && coupleKey
+  const coupleLabel = displayCoupleName ?? coupleKey
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-white px-6 py-16 text-black">
       <div className="w-full max-w-xl space-y-8 text-center">
         <div className="space-y-3">
           <h1 className="text-3xl font-semibold">Fotos de parejas</h1>
-          {rawCouple ? (
+          {coupleKey ? (
             <p className="text-lg text-neutral-700">
-              {imageUrl
-                ? `Excelente, la pareja esta unida: ${rawCouple}`
-                : `Subí una foto de la pareja "${rawCouple}"`}
+              {showInvalidMessage
+                ? `La pareja "${coupleLabel}" no es válida.`
+                : imageUrl
+                ? `Excelente, la pareja esta unida: ${coupleLabel}`
+                : `Subí una foto de la pareja "${coupleLabel}"`}
             </p>
           ) : (
             <p className="text-lg text-neutral-700">Comparte una URL con el parámetro couple.</p>
@@ -170,11 +218,11 @@ export default function Home() {
 
         {imageUrl && (
           <div className="rounded-2xl border border-neutral-200 p-4">
-            <img src={imageUrl} alt={rawCouple ?? 'Couple photo'} className="w-full rounded-xl" />
+            <img src={imageUrl} alt={coupleLabel ?? 'Couple photo'} className="w-full rounded-xl" />
           </div>
         )}
 
-        {rawCouple && (
+        {coupleKey && isValidCouple && (
           <label className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-neutral-300 px-6 py-8">
             <span className="text-sm text-neutral-600">
               {uploading ? 'Subiendo foto...' : imageUrl ? 'Reemplazar foto' : 'Elegir una foto'}

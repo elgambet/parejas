@@ -71,3 +71,20 @@ This project is configured to deploy to GitHub Pages via `.github/workflows/next
 npm run build
 npm run deploy
 ```
+
+## Import valid couples
+
+1. Create a Firebase service account key (JSON) and save it as `serviceAccount.json` in the project root.
+2. Install the admin SDK:
+
+```bash
+npm install
+```
+
+3. Run the import script:
+
+```bash
+GOOGLE_APPLICATION_CREDENTIALS=./serviceAccount.json node scripts/import-valid-couples.mjs
+```
+
+This will create documents in the `validCouples` collection using `coupleKey` as the document ID.
