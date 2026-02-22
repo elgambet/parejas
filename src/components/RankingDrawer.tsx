@@ -82,7 +82,7 @@ export default function RankingDrawer({ isOpen, onClose }: RankingDrawerProps) {
         setLoading(true)
         setError(null)
 
-        const rankingQuery = query(collection(db, 'couples'), orderBy('updatedAt', 'desc'))
+        const rankingQuery = query(collection(db, 'couples'), orderBy('updatedAt', 'asc'))
         const snapshot = await getDocs(rankingQuery)
         if (cancelled) return
 
