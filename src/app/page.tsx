@@ -93,8 +93,11 @@ export default function Home() {
 
         if (cancelled) return
 
+        let resolvedValid = false
+
         if (directSnapshot.exists()) {
           const data = directSnapshot.data() as ValidCoupleRecord
+          resolvedValid = true
           setIsValidCouple(true)
           setDisplayCoupleName(data.coupleName ?? coupleKey)
         } else {
@@ -107,6 +110,7 @@ export default function Home() {
 
           if (!listSnapshot.empty) {
             const data = listSnapshot.docs[0].data() as ValidCoupleRecord
+            resolvedValid = true
             setIsValidCouple(true)
             setDisplayCoupleName(data.coupleName ?? coupleKey)
           } else {
@@ -115,7 +119,7 @@ export default function Home() {
           }
         }
 
-        if (!cancelled && (isValidCouple || directSnapshot.exists())) {
+        if (!cancelled && resolvedValid) {
           const docRef = doc(db, 'couples', coupleKey)
           const snapshot = await getDoc(docRef)
           if (cancelled) return
@@ -143,7 +147,7 @@ export default function Home() {
     return () => {
       cancelled = true
     }
-  }, [coupleKey, isValidCouple])
+  }, [coupleKey])
 
   const handleGoogleSignIn = async () => {
     try {
@@ -195,6 +199,18 @@ export default function Home() {
 
   const showInvalidMessage = isValidCouple === false && coupleKey
   const coupleLabel = displayCoupleName ?? coupleKey
+  const isLoading = status === 'loading' || (coupleKey && isValidCouple === null)
+  const loadingText = uploading ? 'Subiendo foto...' : 'Cargando...'
+
+  if (isLoading || uploading) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-white px-6 py-16 text-black">
+        <div className="text-center">
+          <p className="text-lg text-neutral-700">{loadingText}</p>
+        </div>
+      </main>
+    )
+  }
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-white px-6 py-16 text-black">
@@ -214,8 +230,6 @@ export default function Home() {
           )}
         </div>
 
-        {status === 'loading' && <p className="text-neutral-500">Cargando...</p>}
-
         {imageUrl && (
           <div className="rounded-2xl border border-neutral-200 p-4">
             <img src={imageUrl} alt={coupleLabel ?? 'Couple photo'} className="w-full rounded-xl" />
@@ -225,14 +239,14 @@ export default function Home() {
         {coupleKey && isValidCouple && (
           <label className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-neutral-300 px-6 py-8">
             <span className="text-sm text-neutral-600">
-              {uploading ? 'Subiendo foto...' : imageUrl ? 'Reemplazar foto' : 'Elegir una foto'}
+              {imageUrl ? 'Reemplazar foto' : 'Elegir una foto'}
             </span>
             <input
               type="file"
               accept="image/*"
               className="w-full text-sm file:mr-4 file:rounded-full file:border-0 file:bg-black file:px-4 file:py-2 file:text-white"
               onChange={handleFileChange}
-              disabled={uploading || !user}
+              disabled={!user}
             />
           </label>
         )}
