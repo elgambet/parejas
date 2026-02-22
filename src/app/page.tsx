@@ -108,7 +108,9 @@ export default function Home() {
 
       <div className="w-full max-w-xl space-y-8 text-center">
         <div className="space-y-3">
-          <h1 className="text-3xl font-semibold">Búsqueda de parejas</h1>
+          <h1 className="font-fortalesia text-5xl leading-tight text-neutral-900">
+            Búsqueda de parejas
+          </h1>
           {coupleKey ? (
             <div className="space-y-2 text-lg text-neutral-700">
               {showInvalidMessage ? (

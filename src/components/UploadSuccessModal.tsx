@@ -157,7 +157,9 @@ export default function UploadSuccessModal({
           </svg>
         </button>
 
-        <h2 className="text-3xl font-bold text-neutral-900">Felicitaciones!</h2>
+        <h2 className="font-fortalesia text-6xl leading-tight text-neutral-900">
+          Felicitaciones!
+        </h2>
         {displayedImageUrl && (
           <div className="relative mt-4 flex-1 overflow-visible">
             {hearts.map((heart, index) => (

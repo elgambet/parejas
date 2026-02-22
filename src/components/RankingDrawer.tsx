@@ -149,7 +149,9 @@ export default function RankingDrawer({ isOpen, onClose }: RankingDrawerProps) {
           <div className="flex items-center justify-between border-b border-neutral-200 px-6 py-4">
             <div>
               <p className="text-sm uppercase tracking-widest text-neutral-500">Ranking</p>
-              <h2 className="text-xl font-semibold text-neutral-900">Tabla de tiempos</h2>
+              <h2 className="font-fortalesia text-4xl leading-tight text-neutral-900">
+                Tabla de tiempos
+              </h2>
             </div>
             <button
               type="button"
