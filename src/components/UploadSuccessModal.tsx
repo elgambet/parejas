@@ -158,7 +158,7 @@ export default function UploadSuccessModal({
         </button>
 
         <h2 className="font-fortalesia text-6xl leading-tight text-neutral-900">
-          Felicitaciones!
+          ¡Felicitaciones!
         </h2>
         {displayedImageUrl && (
           <div className="relative mt-4 h-[56vh] max-h-[56vh] overflow-visible">
@@ -185,7 +185,7 @@ export default function UploadSuccessModal({
             </div>
           </div>
         )}
-        <p className="mt-3 text-xl text-neutral-700">{coupleName} se encontraron!</p>
+        <p className="mt-3 text-xl text-neutral-700">¡{coupleName} se encontraron!</p>
       </div>
 
       <style jsx global>{`
