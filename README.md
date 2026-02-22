@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 15-oli-matches
 
-## Getting Started
+QR-driven couple photo upload site using Next.js and Firebase (Firestore + Storage).
 
-First, run the development server:
+## Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Create a `.env.local` file from `.env.example` and fill in your Firebase config:
+
+```bash
+cp .env.example .env.local
+```
+
+3. Enable Firebase Auth providers:
+- Firebase Console → Build → Authentication → Sign-in method
+- Enable `Anonymous`
+- Enable `Google`
+
+4. Create Firestore and Storage, then set rules:
+
+Firestore rules:
+```txt
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /couples/{coupleId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
+```
+
+Storage rules (images only):
+```txt
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /couples/{coupleId}/photo {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.resource.contentType.matches('image/.*');
+    }
+  }
+}
+```
+
+5. Run the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Visit the site with a `couple` query parameter:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- `https://<your-site>/?couple=Mickey-Minnie`
+- URL-encode spaces if needed: `?couple=Mike%20Wazowski-Sullivan`
 
-## Learn More
+## Deploy
 
-To learn more about Next.js, take a look at the following resources:
+This project is configured to deploy to GitHub Pages via `.github/workflows/nextjs.yml`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+npm run build
+npm run deploy
+```
