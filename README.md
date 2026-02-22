@@ -10,11 +10,7 @@ QR-driven couple photo upload site using Next.js and Firebase (Firestore + Stora
 npm install
 ```
 
-2. Create a `.env.local` file from `.env.example` and fill in your Firebase config:
-
-```bash
-cp .env.example .env.local
-```
+2. Firebase config is embedded in `src/lib/firebase.ts` for this project.
 
 3. Enable Firebase Auth providers:
 - Firebase Console → Build → Authentication → Sign-in method
@@ -31,6 +27,10 @@ service cloud.firestore {
     match /couples/{coupleId} {
       allow read: if true;
       allow write: if request.auth != null;
+    }
+    match /validCouples/{coupleId} {
+      allow read: if true;
+      allow write: if false;
     }
   }
 }
@@ -58,19 +58,16 @@ npm run dev
 
 ## Usage
 
-Visit the site with a `couple` query parameter:
+Visit the site with a `couple` query parameter (this is the `coupleKey`):
 
-- `https://<your-site>/?couple=Mickey-Minnie`
-- URL-encode spaces if needed: `?couple=Mike%20Wazowski-Sullivan`
+- `https://<your-site>/?couple=mickey-minnie`
 
-## Deploy
+## Deploy (GitHub Pages)
 
-This project is configured to deploy to GitHub Pages via `.github/workflows/nextjs.yml`.
+Deployment is handled by `.github/workflows/nextjs.yml`.
 
-```bash
-npm run build
-npm run deploy
-```
+- Firebase config is embedded in `src/lib/firebase.ts`.
+- Push to `main` and the workflow will build and publish to GitHub Pages.
 
 ## Import valid couples
 
