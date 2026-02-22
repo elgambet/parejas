@@ -3,6 +3,7 @@
 import { useId, useState } from 'react'
 
 import useCoupleData from '@/hooks/useCoupleData'
+import useElapsedTime from '@/hooks/useElapsedTime'
 import useLoader from '@/hooks/useLoader'
 import useSession from '@/hooks/useSession'
 
@@ -16,11 +17,14 @@ export default function Home() {
     coupleKey,
     displayCoupleName,
     imageUrl,
+    updatedAt,
     isValidCouple,
     status,
     errorMessage,
     uploadImage,
   } = useCoupleData()
+
+  const { elapsedText } = useElapsedTime(updatedAt)
 
   const { showLoader, loaderText, handleFileChange } = useLoader({
     status,
@@ -51,13 +55,15 @@ export default function Home() {
         <div className="space-y-3">
           <h1 className="text-3xl font-semibold">Búsqueda de parejas</h1>
           {coupleKey ? (
-            <p className="text-lg text-neutral-700">
-              {showInvalidMessage
-                ? `Esa pareja no está en la lista: "${coupleLabel}".`
-                : imageUrl
-                ? `¡Encontrada! ${coupleLabel} ya está unida.`
-                : `La pareja "${coupleLabel}" aún no se encuentra, buscala antes que se ponga triste...`}
-            </p>
+            <div className="space-y-2 text-lg text-neutral-700">
+              {showInvalidMessage ? (
+                <p>Esa pareja no está en la lista: "{coupleLabel}".</p>
+              ) : imageUrl ? (
+                <p>¡Encontrada! {coupleLabel} ya está unida.</p>
+              ) : (
+                <p>La pareja "{coupleLabel}" aún no se encuentra, buscala antes que se ponga triste...</p>
+              )}
+            </div>
           ) : (
             <p className="text-lg text-neutral-700">
               Entrá con el QR de tu asiento para empezar la búsqueda.
@@ -66,8 +72,13 @@ export default function Home() {
         </div>
 
         {imageUrl && (
-          <div className="rounded-2xl border border-neutral-200 p-4">
-            <img src={imageUrl} alt={coupleLabel ?? 'Couple photo'} className="w-full rounded-xl" />
+          <div className="space-y-3">
+            <div className="rounded-2xl border border-neutral-200 p-4">
+              <img src={imageUrl} alt={coupleLabel ?? 'Couple photo'} className="w-full rounded-xl" />
+            </div>
+            {elapsedText && (
+              <p className="text-sm italic text-neutral-500">Se encontraron hace {elapsedText}</p>
+            )}
           </div>
         )}
 
@@ -101,6 +112,9 @@ export default function Home() {
                     >
                       Elegir foto
                     </label>
+                    <p className="text-xs text-neutral-500">
+                      Esta nueva foto actualizará el tiempo del encuentro.
+                    </p>
                   </>
                 )}
               </>

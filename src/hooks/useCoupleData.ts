@@ -18,6 +18,7 @@ import { db, storage } from '@/lib/firebase'
 type CoupleRecord = {
   coupleName: string
   imageUrl: string
+  updatedAt?: { toDate?: () => Date }
 }
 
 type ValidCoupleRecord = {
@@ -29,6 +30,7 @@ type UseCoupleDataState = {
   coupleKey: string | null
   displayCoupleName: string | null
   imageUrl: string | null
+  updatedAt: Date | null
   isValidCouple: boolean | null
   status: 'idle' | 'loading' | 'ready' | 'error'
   errorMessage: string | null
@@ -41,6 +43,12 @@ function readCoupleKeyParam(rawValue: string | null): string | null {
   return decoded.length ? decoded : null
 }
 
+function extractDate(value: CoupleRecord['updatedAt']): Date | null {
+  if (!value) return null
+  if (typeof value.toDate === 'function') return value.toDate()
+  return null
+}
+
 export default function useCoupleData(): UseCoupleDataState {
   const searchParams = useSearchParams()
   const coupleKey = useMemo(
@@ -51,6 +59,7 @@ export default function useCoupleData(): UseCoupleDataState {
   const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [updatedAt, setUpdatedAt] = useState<Date | null>(null)
   const [isValidCouple, setIsValidCouple] = useState<boolean | null>(null)
   const [displayCoupleName, setDisplayCoupleName] = useState<string | null>(null)
 
@@ -108,11 +117,14 @@ export default function useCoupleData(): UseCoupleDataState {
           if (snapshot.exists()) {
             const data = snapshot.data() as CoupleRecord
             setImageUrl(data.imageUrl)
+            setUpdatedAt(extractDate(data.updatedAt))
           } else {
             setImageUrl(null)
+            setUpdatedAt(null)
           }
         } else {
           setImageUrl(null)
+          setUpdatedAt(null)
         }
 
         setStatus('ready')
@@ -156,6 +168,7 @@ export default function useCoupleData(): UseCoupleDataState {
       )
 
       setImageUrl(url)
+      setUpdatedAt(new Date())
       setStatus('ready')
     } catch (error) {
       setStatus('error')
@@ -167,6 +180,7 @@ export default function useCoupleData(): UseCoupleDataState {
     coupleKey,
     displayCoupleName,
     imageUrl,
+    updatedAt,
     isValidCouple,
     status,
     errorMessage,
