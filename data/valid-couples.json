@@ -1,62 +1,127 @@
 [
-  { "coupleName": "Mickey & Minnie", "coupleKey": "mickey-minnie" },
-  { "coupleName": "Pato Donald & Daisy", "coupleKey": "pato-donald-daisy" },
-  { "coupleName": "Goofy & Max", "coupleKey": "goofy-max" },
-  { "coupleName": "Woody & Buzz Lightyear", "coupleKey": "woody-buzz-lightyear" },
-  { "coupleName": "Lilo & Stitch", "coupleKey": "lilo-stitch" },
-  { "coupleName": "Mike Wazowski & Sullivan", "coupleKey": "mike-wazowski-sullivan" },
-  { "coupleName": "Timon & Pumbaa", "coupleKey": "timon-pumbaa" },
-  { "coupleName": "Simba & Nala", "coupleKey": "simba-nala" },
-  { "coupleName": "Mufasa & Sarabi", "coupleKey": "mufasa-sarabi" },
-  { "coupleName": "Aladdin & Jasmine", "coupleKey": "aladdin-jasmine" },
-  { "coupleName": "Genio & Aladdin", "coupleKey": "genio-aladdin" },
+  {
+    "coupleName": "Cenicienta & Príncipe Azul",
+    "coupleKey": "cenicienta-principe-azul"
+  },
+  {
+    "coupleName": "Blancanieves & Príncipe Florian",
+    "coupleKey": "blancanieves-principe-florian"
+  },
+  {
+    "coupleName": "Aurora & Príncipe Felipe",
+    "coupleKey": "aurora-principe-felipe"
+  },
+  { "coupleName": "Ariel & Eric", "coupleKey": "ariel-eric" },
   { "coupleName": "Bella & Bestia", "coupleKey": "bella-bestia" },
-  { "coupleName": "Lumière & Din Don", "coupleKey": "lumiere-din-don" },
-  { "coupleName": "Ariel & Príncipe Eric", "coupleKey": "ariel-principe-eric" },
-  { "coupleName": "Sebastián & Flounder", "coupleKey": "sebastian-flounder" },
-  { "coupleName": "Cenicienta & Príncipe Azul", "coupleKey": "cenicienta-principe-azul" },
-  { "coupleName": "Jaq & Gus", "coupleKey": "jaq-gus" },
-  { "coupleName": "Blancanieves & Príncipe Florian", "coupleKey": "blancanieves-principe-florian" },
-  { "coupleName": "Aurora & Príncipe Felipe", "coupleKey": "aurora-principe-felipe" },
-  { "coupleName": "Flora & Primavera", "coupleKey": "flora-primavera" },
-  { "coupleName": "Rapunzel & Flynn Rider", "coupleKey": "rapunzel-flynn-rider" },
-  { "coupleName": "Máximus & Pascal", "coupleKey": "maximus-pascal" },
-  { "coupleName": "Tiana & Príncipe Naveen", "coupleKey": "tiana-principe-naveen" },
-  { "coupleName": "Mulan & Li Shang", "coupleKey": "mulan-li-shang" },
-  { "coupleName": "Mushu & Mulan", "coupleKey": "mushu-mulan" },
+  { "coupleName": "Jazmín & Aladdín", "coupleKey": "jazmin-aladdin" },
+  {
+    "coupleName": "Pocahontas & John Smith",
+    "coupleKey": "pocahontas-john-smith"
+  },
+  { "coupleName": "Mulán & Li Shang", "coupleKey": "mulan-li-shang" },
+  { "coupleName": "Tiana & Naveen", "coupleKey": "tiana-naveen" },
+  {
+    "coupleName": "Rapunzel & Flynn Rider (Eugene)",
+    "coupleKey": "rapunzel-flynn-rider-eugene"
+  },
+  { "coupleName": "Anna & Kristoff", "coupleKey": "anna-kristoff" },
   { "coupleName": "Hércules & Megara", "coupleKey": "hercules-megara" },
-  { "coupleName": "Phil & Hércules", "coupleKey": "phil-hercules" },
   { "coupleName": "Tarzán & Jane", "coupleKey": "tarzan-jane" },
-  { "coupleName": "Terk & Tantor", "coupleKey": "terk-tantor" },
-  { "coupleName": "Kuzco & Pacha", "coupleKey": "kuzco-pacha" },
-  { "coupleName": "Kronk & Yzma", "coupleKey": "kronk-yzma" },
-  { "coupleName": "Milo Thatch & Kida", "coupleKey": "milo-thatch-kida" },
-  { "coupleName": "Jim Hawkins & John Silver", "coupleKey": "jim-hawkins-john-silver" },
-  { "coupleName": "Kenai & Koda", "coupleKey": "kenai-koda" },
-  { "coupleName": "Marlin & Dory", "coupleKey": "marlin-dory" },
-  { "coupleName": "Nemo & Marlin", "coupleKey": "nemo-marlin" },
-  { "coupleName": "Rayo McQueen & Mate", "coupleKey": "rayo-mcqueen-mate" },
-  { "coupleName": "Remy & Linguini", "coupleKey": "remy-linguini" },
-  { "coupleName": "Wall-E & Eve", "coupleKey": "wall-e-eve" },
-  { "coupleName": "Carl Fredricksen & Russell", "coupleKey": "carl-fredricksen-russell" },
-  { "coupleName": "Dug & Carl Fredricksen", "coupleKey": "dug-carl-fredricksen" },
-  { "coupleName": "Alegría & Tristeza", "coupleKey": "alegria-tristeza" },
-  { "coupleName": "Bing Bong & Alegría", "coupleKey": "bing-bong-alegria" },
-  { "coupleName": "Judy Hopps & Nick Wilde", "coupleKey": "judy-hopps-nick-wilde" },
-  { "coupleName": "Moana & Maui", "coupleKey": "moana-maui" },
-  { "coupleName": "Heihei & Pua", "coupleKey": "heihei-pua" },
-  { "coupleName": "Miguel & Héctor", "coupleKey": "miguel-hector" },
-  { "coupleName": "Dante & Miguel", "coupleKey": "dante-miguel" },
-  { "coupleName": "Luca & Alberto", "coupleKey": "luca-alberto" },
-  { "coupleName": "Mei Lee & Miriam", "coupleKey": "mei-lee-miriam" },
-  { "coupleName": "Mirabel & Bruno", "coupleKey": "mirabel-bruno" },
-  { "coupleName": "Isabela & Luisa", "coupleKey": "isabela-luisa" },
-  { "coupleName": "Anna & Elsa", "coupleKey": "anna-elsa" },
-  { "coupleName": "Kristoff & Anna", "coupleKey": "kristoff-anna" },
-  { "coupleName": "Olaf & Sven", "coupleKey": "olaf-sven" },
-  { "coupleName": "Ralph & Vanellope", "coupleKey": "ralph-vanellope" },
-  { "coupleName": "Baymax & Hiro", "coupleKey": "baymax-hiro" },
-  { "coupleName": "Mowgli & Baloo", "coupleKey": "mowgli-baloo" },
-  { "coupleName": "Bagheera & Baloo", "coupleKey": "bagheera-baloo" },
-  { "coupleName": "Robin Hood & Little John", "coupleKey": "robin-hood-little-john" }
+  { "coupleName": "Simba & Nala", "coupleKey": "simba-nala" },
+  { "coupleName": "Wall-E & Eva", "coupleKey": "wall-e-eva" },
+  { "coupleName": "Harley Quinn & Joker", "coupleKey": "harley-quinn-joker" },
+  { "coupleName": "Hades & Maléfica", "coupleKey": "hades-malefica" },
+  {
+    "coupleName": "Mr. Incredible & Elastigirl",
+    "coupleKey": "mr-incredible-elastigirl"
+  },
+  { "coupleName": "Batman & Catwoman", "coupleKey": "batman-catwoman" },
+  { "coupleName": "Superman & Lois Lane", "coupleKey": "superman-lois-lane" },
+  { "coupleName": "Spider-Man & MJ", "coupleKey": "spider-man-mj" },
+  {
+    "coupleName": "Iron Man & Pepper Potts",
+    "coupleKey": "iron-man-pepper-potts"
+  },
+  {
+    "coupleName": "Capitán América & Peggy Carter",
+    "coupleKey": "capitan-america-peggy-carter"
+  },
+  { "coupleName": "Flash & Iris West", "coupleKey": "flash-iris-west" },
+  { "coupleName": "Vision & Wanda", "coupleKey": "vision-wanda" },
+  { "coupleName": "Mickey & Minnie", "coupleKey": "mickey-minnie" },
+  { "coupleName": "Shrek & Fiona", "coupleKey": "shrek-fiona" },
+  { "coupleName": "Homero & Morticia", "coupleKey": "homero-morticia" },
+  { "coupleName": "Barbie & Ken", "coupleKey": "barbie-ken" },
+  {
+    "coupleName": "Jessica Rabbit & Roger Rabbit",
+    "coupleKey": "jessica-rabbit-roger-rabbit"
+  },
+  { "coupleName": "Star-Lord & Gamora", "coupleKey": "star-lord-gamora" },
+  { "coupleName": "Peter Pan & Wendy", "coupleKey": "peter-pan-wendy" },
+  { "coupleName": "Lucas & Max", "coupleKey": "lucas-max" },
+  { "coupleName": "Mike & Eleven", "coupleKey": "mike-eleven" },
+  { "coupleName": "Hopper & Joyce", "coupleKey": "hopper-joyce" },
+  { "coupleName": "Mal & Ben", "coupleKey": "mal-ben" },
+  { "coupleName": "Austin & Ally", "coupleKey": "austin-ally" },
+  { "coupleName": "Carl & Ellie", "coupleKey": "carl-ellie" },
+  { "coupleName": "Rayo McQueen & Sally", "coupleKey": "rayo-mcqueen-sally" },
+  { "coupleName": "Brady & Mackenzie", "coupleKey": "brady-mackenzie" },
+  { "coupleName": "Tanner & Lila", "coupleKey": "tanner-lila" },
+  { "coupleName": "Robin & Vickie", "coupleKey": "robin-vickie" },
+  { "coupleName": "Percy & Annabeth", "coupleKey": "percy-annabeth" },
+  { "coupleName": "Antonella & Messi", "coupleKey": "antonella-messi" },
+  {
+    "coupleName": "Cristiano Ronaldo & Georgina",
+    "coupleKey": "cristiano-ronaldo-georgina"
+  },
+  { "coupleName": "Dybala & Oriana", "coupleKey": "dybala-oriana" },
+  { "coupleName": "Ross & Rachel", "coupleKey": "ross-rachel" },
+  { "coupleName": "Monica & Chandler", "coupleKey": "monica-chandler" },
+  { "coupleName": "Romeo & Julieta", "coupleKey": "romeo-julieta" },
+  {
+    "coupleName": "Edward Cullen & Bella Swan",
+    "coupleKey": "edward-cullen-bella-swan"
+  },
+  { "coupleName": "Jack & Rose", "coupleKey": "jack-rose" },
+  { "coupleName": "Néstor & Cristina", "coupleKey": "nestor-cristina" },
+  { "coupleName": "Eva & Perón", "coupleKey": "eva-peron" },
+  {
+    "coupleName": "Cleopatra & Julio César",
+    "coupleKey": "cleopatra-julio-cesar"
+  },
+  {
+    "coupleName": "Frida Kahlo & Diego Rivera",
+    "coupleKey": "frida-kahlo-diego-rivera"
+  },
+  { "coupleName": "Salvador Dalí & Gala", "coupleKey": "salvador-dali-gala" },
+  {
+    "coupleName": "John Lennon & Yoko Ono",
+    "coupleKey": "john-lennon-yoko-ono"
+  },
+  {
+    "coupleName": "Kurt Cobain & Courtney Love",
+    "coupleKey": "kurt-cobain-courtney-love"
+  },
+  {
+    "coupleName": "Lady Di & Príncipe Carlos",
+    "coupleKey": "lady-di-principe-carlos"
+  },
+  {
+    "coupleName": "Brad Pitt & Jennifer Aniston",
+    "coupleKey": "brad-pitt-jennifer-aniston"
+  },
+  { "coupleName": "Homero & Marge", "coupleKey": "homero-marge" },
+  { "coupleName": "Cosmo & Wanda", "coupleKey": "cosmo-wanda" },
+  { "coupleName": "Burro & Dragona", "coupleKey": "burro-dragona" },
+  { "coupleName": "Han Solo & Leia", "coupleKey": "han-solo-leia" },
+  {
+    "coupleName": "Elizabeth Bennet & Mr. Darcy",
+    "coupleKey": "elizabeth-bennet-mr-darcy"
+  },
+  {
+    "coupleName": "Mario & Princesa Peach",
+    "coupleKey": "mario-princesa-peach"
+  },
+  { "coupleName": "Rick & Morty (prueba)", "coupleKey": "rick-morty-prueba" },
+  { "coupleName": "Elon & Trump (prueba)", "coupleKey": "elon-trump-prueba" }
 ]
