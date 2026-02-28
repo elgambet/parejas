@@ -29,6 +29,7 @@ export default function Home() {
     imageUrl,
     updatedAt,
     isValidCouple,
+    status,
     uploadImage,
   } = useCoupleData();
 
