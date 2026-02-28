@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 
+import assetPath from "@/lib/assetPath";
 import { db } from "@/lib/firebase";
 
 type RankingEntry = {
@@ -168,7 +169,9 @@ export default function RankingDrawer({ isOpen, onClose }: RankingDrawerProps) {
   };
 
   const getCoupleImageSrc = (id: string) =>
-    missingCoupleImages.has(id) ? "/ranking-default.png" : `/couples/${id}.svg`;
+    missingCoupleImages.has(id)
+      ? assetPath("/ranking-default.png")
+      : assetPath(`/couples/${id}.svg`);
 
   return (
     <div
@@ -300,7 +303,7 @@ export default function RankingDrawer({ isOpen, onClose }: RankingDrawerProps) {
                             />
                           ) : (
                             <img
-                              src="/image-not-found.png"
+                              src={assetPath("/image-not-found.png")}
                               alt={entry.coupleName}
                               className="h-full max-w-full rounded-xl object-contain"
                             />

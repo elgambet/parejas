@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import assetPath from "@/lib/assetPath";
 
 type UploadSuccessModalProps = {
   isOpen: boolean;
@@ -80,11 +81,11 @@ export default function UploadSuccessModal({
       }
 
       const candidates = [
-        `/couples/${coupleKey}.png`,
-        `/couples/${coupleKey}.jpg`,
-        `/couples/${coupleKey}.jpeg`,
-        `/couples/${coupleKey}.webp`,
-        `/couples/${coupleKey}.svg`,
+        assetPath(`/couples/${coupleKey}.png`),
+        assetPath(`/couples/${coupleKey}.jpg`),
+        assetPath(`/couples/${coupleKey}.jpeg`),
+        assetPath(`/couples/${coupleKey}.webp`),
+        assetPath(`/couples/${coupleKey}.svg`),
       ];
 
       for (const candidate of candidates) {

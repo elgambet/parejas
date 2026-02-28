@@ -12,6 +12,7 @@ import useElapsedTime from "@/hooks/useElapsedTime";
 import useImageReveal from "@/hooks/useImageReveal";
 import useLoader from "@/hooks/useLoader";
 import useSession from "@/hooks/useSession";
+import assetPath from "@/lib/assetPath";
 
 export default function Home() {
   const [showReplacePicker, setShowReplacePicker] = useState(false);
@@ -134,7 +135,7 @@ export default function Home() {
         {showInvalidMessage && (
           <div className="mx-auto w-full max-w-sm">
             <img
-              src="/code-not-found.png"
+              src={assetPath("/code-not-found.png")}
               alt="Código de pareja no encontrado"
               className="h-auto w-full rounded-2xl border border-neutral-200"
             />
