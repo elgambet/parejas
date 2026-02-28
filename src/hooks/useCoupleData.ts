@@ -18,6 +18,8 @@ import { db, storage } from "@/lib/firebase";
 type CoupleRecord = {
   coupleName: string;
   imageUrl: string;
+  imageWidth?: number;
+  imageHeight?: number;
   updatedAt?: { toDate?: () => Date };
 };
 
@@ -47,6 +49,30 @@ function extractDate(value: CoupleRecord["updatedAt"]): Date | null {
   if (!value) return null;
   if (typeof value.toDate === "function") return value.toDate();
   return null;
+}
+
+function getImageDimensions(
+  file: File,
+): Promise<{ width: number; height: number }> {
+  return new Promise((resolve, reject) => {
+    const objectUrl = URL.createObjectURL(file);
+    const image = new Image();
+
+    image.onload = () => {
+      resolve({
+        width: image.naturalWidth,
+        height: image.naturalHeight,
+      });
+      URL.revokeObjectURL(objectUrl);
+    };
+
+    image.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error("No se pudo leer el tamaño de la imagen."));
+    };
+
+    image.src = objectUrl;
+  });
 }
 
 export default function useCoupleData(): UseCoupleDataState {
@@ -158,6 +184,7 @@ export default function useCoupleData(): UseCoupleDataState {
       }
 
       setErrorMessage(null);
+      const dimensions = await getImageDimensions(file).catch(() => null);
       const storageRef = ref(storage, `couples/${coupleKey}/photo`);
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
@@ -168,6 +195,8 @@ export default function useCoupleData(): UseCoupleDataState {
         {
           coupleName: displayCoupleName ?? coupleKey,
           imageUrl: url,
+          imageWidth: dimensions?.width ?? null,
+          imageHeight: dimensions?.height ?? null,
           updatedBy: user.uid,
           updatedAt: serverTimestamp(),
         },

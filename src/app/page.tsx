@@ -114,7 +114,7 @@ export default function Home() {
           {coupleKey ? (
             <div className="space-y-2 text-lg text-neutral-700">
               {showInvalidMessage ? (
-                <p>Esa pareja no está en la lista: "{coupleLabel}".</p>
+                null
               ) : imageUrl ? (
                 <p>¡Encontrada! {coupleLabel} ya está unida.</p>
               ) : (
@@ -130,6 +130,16 @@ export default function Home() {
             </p>
           )}
         </div>
+
+        {showInvalidMessage && (
+          <div className="mx-auto w-full max-w-sm">
+            <img
+              src="/code-not-found.png"
+              alt="Código de pareja no encontrado"
+              className="h-auto w-full rounded-2xl border border-neutral-200"
+            />
+          </div>
+        )}
 
         {imageUrl && (
           <div className="space-y-3">
