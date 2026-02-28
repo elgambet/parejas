@@ -22,15 +22,13 @@ export default function Home() {
   const uploadInputId = useId();
   const replaceInputId = useId();
 
-  const { user, authReady, authError, signInWithGoogle } = useSession();
+  const { user, authReady, signInWithGoogle } = useSession();
   const {
     coupleKey,
     displayCoupleName,
     imageUrl,
     updatedAt,
     isValidCouple,
-    status,
-    errorMessage,
     uploadImage,
   } = useCoupleData();
 
@@ -46,6 +44,7 @@ export default function Home() {
   });
 
   const showInvalidMessage = isValidCouple === false && coupleKey;
+  const showCodeNotFoundImage = !coupleKey || isValidCouple === false;
   const coupleLabel = displayCoupleName ?? coupleKey;
 
   const handleCameraCapture = async (dataUrl: string) => {
@@ -132,7 +131,7 @@ export default function Home() {
           )}
         </div>
 
-        {showInvalidMessage && (
+        {showCodeNotFoundImage && (
           <div className="mx-auto w-full max-w-sm">
             <img
               src={assetPath("/code-not-found.png")}
@@ -258,11 +257,6 @@ export default function Home() {
           </button>
         )}
 
-        {authError && <p className="text-sm text-red-600">{authError}</p>}
-
-        {status === "error" && errorMessage && (
-          <p className="text-sm text-red-600">{errorMessage}</p>
-        )}
       </div>
 
       <style jsx global>{`

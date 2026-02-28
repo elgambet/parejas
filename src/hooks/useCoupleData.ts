@@ -96,7 +96,7 @@ export default function useCoupleData(): UseCoupleDataState {
   useEffect(() => {
     if (!coupleKey) {
       setStatus("error");
-      setErrorMessage("Falta el parámetro couple en la URL.");
+      setErrorMessage(null);
       setIsValidCouple(false);
       return;
     }
