@@ -122,6 +122,15 @@
     "coupleName": "Mario & Princesa Peach",
     "coupleKey": "mario-princesa-peach"
   },
-  { "coupleName": "Rick & Morty (prueba)", "coupleKey": "rick-morty-prueba" },
-  { "coupleName": "Elon & Trump (prueba)", "coupleKey": "elon-trump-prueba" }
+  { "coupleName": "El Diego - La Claudia", "coupleKey": "el-diego-la-claudia" },
+  {
+    "coupleName": "Francesca - Michaela (Bridgerton)",
+    "coupleKey": "francesca-michaela"
+  },
+  { "coupleName": "Lali - Pedro", "coupleKey": "lali-pedro" },
+  {
+    "coupleName": "Noah - Allie (diario de una pasión)",
+    "coupleKey": "noah-allie"
+  },
+  { "coupleName": "Tini - De Paul", "coupleKey": "tini-de-paul" }
 ]
